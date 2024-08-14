@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/static/js/tailwindcss.js"></script>
+    <script src="/static/js/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="/static/css/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="/static/css/web.css">
+    <title>工资管理系统</title>
+</head>
+<script>
+    {% if context.err %}
+        alert("{{ context.err}}");
+        window.location.history(-1);
+    {% endif %}
+
+    {% if context.msg %}
+        alert("{{ context.msg}}");
+    {% endif %}
+
+</script>
+<body>
+<div class="relative min-h-screen flex">
+    <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-center flex-auto min-w-0 bg-white bg-[url('/static/images/bg.jpg')] bg-cover">
+        <div class="flex items-center justify-center w-full sm:w-auto w-2/5 xl:w-2/5 p-8 md:p-10 lg:p-14 sm:rounded-lg md:rounded-sm bg-white bg-opacity-75">
+            <div class="max-w-md w-full mx-auto space-y-8">
+
+                <form class="mt-8 space-y-6 login-form" action="/login" method=POST><input type=hidden name=remember
+                                                                                           value="true">
+                    <div class=text-center>
+                        <h2 class="mt-6 text-3xl font-bold text-gray-900">欢迎回来</h2>
+                    </div>
+                    <div class="flex items-center justify-center space-x-2"><span class="h-px w-16 bg-gray-200"></span>
+                        <span class="text-black-300 font-normal">使用用户名登录</span> <span
+                                class="h-px w-16 bg-gray-200"></span></div>
+                    <div class=relative><label
+                            class="ml-3 text-sm font-bold text-gray-700 tracking-wide">用户名</label><input
+                            name="username"
+                            class="w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
+                            type="text" placeholder="请输入用户名"></div>
+                    <div class="mt-8 content-center"><label
+                            class="ml-3 text-sm font-bold text-gray-700 tracking-wide">密码</label><input
+                            class="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                            name="password"
+                            type="password" placeholder="请输入密码"></div>
+                    <div>
+                        <button type=submit
+                                class="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500">
+                            登录
+                        </button>
+                    </div>
+                    <p class="items-center justify-center mt-10 text-center text-md text-gray-500">
+                        <span>还没有账号？</span> <a href="#"
+                                                    class="text-indigo-400 hover:text-blue-500 no-underline hover:underline cursor-pointer transition ease-in duration-300 switch-to-register">立即注册</a>
+                    </p>
+                </form>
+                <form class="mt-8 space-y-6 register-form hidden" action="/register" method=POST>
+                    <input type=hidden name=remember value="true">
+                    <div class=text-center>
+                        <h2 class="mt-6 text-3xl font-bold text-gray-900">填写注册</h2>
+                    </div>
+                    <div class="flex items-center justify-center space-x-2"><span class="h-px w-16 bg-gray-200"></span>
+                        <span class="text-black-300 font-normal">提供账号和密码进行注册</span> <span
+                                class="h-px w-16 bg-gray-200"></span></div>
+                    <div class=relative><label
+                            class="ml-3 text-sm font-bold text-gray-700 tracking-wide">用户名</label>
+                        <input
+                                class="w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
+                                name="username"
+                                type="text" placeholder="请输入用户名"></div>
+                    <div class="mt-8 content-center"><label
+                            class="ml-3 text-sm font-bold text-gray-700 tracking-wide">密码</label>
+                        <input
+                                class="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                                type="password" name="password" placeholder="请输入密码"></div>
+                    <div class="mt-8 content-center"><label
+                            class="ml-3 text-sm font-bold text-gray-700 tracking-wide">确认密码</label>
+                        <input
+                                class="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                                type="password" name="confirm_password" placeholder="请再次输入密码"></div>
+                    <div>
+                        <button type=submit
+                                class="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500">
+                            注册
+                        </button>
+                    </div>
+                    <p class="items-center justify-center mt-10 text-center text-md text-gray-500">
+                        <span>已有账号？</span> <a href="#"
+                                                  class="text-indigo-400 hover:text-blue-500 no-underline hover:underline cursor-pointer transition ease-in duration-300 switch-to-login">立即登录</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const loginForm = document.querySelector('.login-form');
+    const registerForm = document.querySelector('.register-form');
+    const switchToRegister = document.querySelector('.switch-to-register');
+    const switchToLogin = document.querySelector('.switch-to-login');
+    const bgImages = ['/static/image/img.webp', '/static/image/img2.jpeg', '/static/image/img3.jpeg'];
+    let currentImageIndex = 0;
+    const bgImageElement = document.querySelector('.bg-purple-900');
+
+    // setInterval(() => {
+    //     currentImageIndex = (currentImageIndex + 1) % bgImages.length;
+    //     bgImageElement.style.backgroundImage = `url(${bgImages[currentImageIndex]})`;
+    // }, 5000);
+
+    switchToRegister.addEventListener('click', () => {
+        loginForm.classList.add('animate__animated', 'animate__fadeOutLeft');
+        setTimeout(() => {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+            registerForm.classList.add('animate__animated', 'animate__fadeInRight');
+        }, 500);
+    });
+
+    switchToLogin.addEventListener('click', () => {
+        registerForm.classList.add('animate__animated', 'animate__fadeOutRight');
+        setTimeout(() => {
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            loginForm.classList.add('animate__animated', 'animate__fadeInLeft');
+        }, 500);
+    });
+</script>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+        },
+        autoplay: {
+            delay: 3000,
+        },
+    });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,398 @@
+{% extends 'base.html' %}
+
+{% block back %}
+
+{% endblock %}
+
+{% block container %}
+    <h1 class="text-2xl font-semibold mb-4">监测记录</h1>
+
+
+    <!-- 添加模态框 -->
+    <div id="editModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-white p-4 rounded-md">
+            <!-- 表单内容 -->
+            <form id="editForm" action="/home" enctype="multipart/form-data" method="post">
+                <input type="hidden" name="record_id">
+                <div class="mb-4">
+                    <label for="监测点位"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">监测点位:</label>
+                    <input id="position" type="text" name="position" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="监测点位">
+                </div>
+
+                <div class="mb-4">
+                    <label for="date" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">时间:</label>
+                    <input id="date" type="text" name="date"
+                           readonly
+                           class="flexDate mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           format="yyyy-MM-dd HH:mm:ss"
+                           placeholder="选择时间"
+                           clearBtn="true" confirm="confirm" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="jsl" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">降水量(mm):</label>
+                    <input id="jsl" type="number" name="jsl" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="降水量 (mm)">
+                </div>
+                <div class="mb-4">
+                    <label for="ysl" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">涌水量(m3/min):</label>
+                    <input id="ysl" type="number" name="ysl" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="涌水量(m3/min)">
+                </div>
+                <div class="mb-4">
+                    <label for="sw" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">水位(m):</label>
+                    <input id="sw" type="number" name="sw" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="水位(m)">
+                </div>
+                <div class="mb-4">
+                    <label for="temp" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">水温(摄氏度):</label>
+                    <input id="temp" type="number" name="temp" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="水温(摄氏度)">
+                </div>
+                <div class="mb-4">
+                    <label for="sls" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">水流速(m/min):</label>
+                    <input id="sls" type="number" name="sls" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="水流速(m/min)">
+                </div>
+                <div class="mb-4">
+                    <label for="dbcxwy"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">空气湿度(%)</label>
+                    <input id="dbcxwy" type="number" name="dbcxwy" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="空气湿度(%)">
+                </div>
+                <div class="mb-4">
+                    <label for="wz" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">大气温度(℃):</label>
+                    <input id="wz" type="number" name="wz" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="大气温度(℃)">
+                </div>
+                <!-- 省略其他表单字段 -->
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-600 ml-4">保存修改
+                </button>
+                <button type="button" id="closeModal"
+                        class="mt-2 px-4 py-2 bg-red-500 text-white rounded-md cursor-pointer hover:bg-red-600">
+                    关闭
+                </button>
+            </form>
+            <!-- 关闭按钮 -->
+
+        </div>
+    </div>
+
+    <div id="settingModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-white p-4 rounded-md">
+            <!-- 表单内容 -->
+            <form id="editForm" action="/setting" enctype="multipart/form-data" method="post">
+
+                <div class="mb-4">
+                    <label for="jsl" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">降水量(mm):</label>
+                    <select name="jsl_action" id="jsl_action">
+                        {% if context.setting.jsl %}
+                            <option value="lt" {% if context.setting.jsl.action == "lt" %} selected {% endif %} >
+                                小于等于
+                            </option>
+                            <option value="gt" {% if context.setting.jsl.action == "gt" %} selected {% endif %}>
+                                大于等于
+                            </option>
+                        {% else %}
+                            <option value="lt">小于等于</option>
+                            <option value="gt">大于等于</option>
+                        {% endif %}
+                    </select>
+                    <input id="jsl" type="number" name="jsl"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                            {% if context.setting.jsl %} value="{{ context.setting.jsl.value }}" {% endif %}
+                           placeholder="降水量 (mm)">
+                </div>
+                <div class="mb-4">
+                    <label for="ysl" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">涌水量(m3/min):</label>
+                    <select name="ysl_action" id="ysl_action">
+                        {% if context.setting.ysl %}
+                            <option value="lt" {% if context.setting.ysl.action == "lt" %} selected {% endif %} >小于等于
+                            </option>
+                            <option value="gt" {% if context.setting.ysl.action == "gt" %} selected {% endif %}>大于等于
+                            </option>
+                        {% else %}
+                            <option value="lt">小于等于</option>
+                            <option value="gt">大于等于</option>
+                        {% endif %}
+
+                    </select>
+                    <input id="ysl" type="number" name="ysl"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                            {% if context.setting.ysl %} value="{{ context.setting.ysl.value }}" {% endif %}
+                           placeholder="涌水量(m3/min)">
+                </div>
+                <div class="mb-4">
+                    <label for="sw" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">水位(m):</label>
+                    <select name="sw_action" id="sw_action">
+                        {% if context.setting.sw %}
+                            <option value="lt" {% if context.setting.sw.action == "lt" %} selected {% endif %} >小于等于
+                            </option>
+                            <option value="gt" {% if context.setting.sw.action == "gt" %} selected {% endif %}>大于等于
+                            </option>
+                        {% else %}
+                            <option value="lt">小于等于</option>
+                            <option value="gt">大于等于</option>
+                        {% endif %}
+                    </select>
+                    <input id="sw" type="number" name="sw"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                            {% if context.setting.sw %} value="{{ context.setting.sw.value }}" {% endif %}
+                           placeholder="水位(m)">
+                </div>
+                <div class="mb-4">
+                    <label for="temp" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">水温(摄氏度):</label>
+                    <select name="temp_action" id="temp_action">
+                        {% if context.setting.temp %}
+                            <option value="lt" {% if context.setting.temp.action == "lt" %} selected {% endif %} >小于等于
+                            </option>
+                            <option value="gt" {% if context.setting.temp.action == "gt" %} selected {% endif %}>大于等于
+                            </option>
+                        {% else %}
+                            <option value="lt">小于等于</option>
+                            <option value="gt">大于等于</option>
+                        {% endif %}
+                    </select>
+                    <input id="temp" type="number" name="temp"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                            {% if context.setting.temp %} value="{{ context.setting.temp.value }}" {% endif %}
+                           placeholder="水温(摄氏度)">
+                </div>
+                <div class="mb-4">
+                    <label for="sls" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">水流速(m/min):</label>
+                    <select name="sls_action" id="sls_action">
+                        {% if context.setting.sls %}
+                            <option value="lt" {% if context.setting.sls.action == "lt" %} selected {% endif %} >小于等于
+                            </option>
+                            <option value="gt" {% if context.setting.sls.action == "gt" %} selected {% endif %}>大于等于
+                            </option>
+                        {% else %}
+                            <option value="lt">小于等于</option>
+                            <option value="gt">大于等于</option>
+                        {% endif %}
+                    </select>
+                    <input id="sls" type="number" name="sls"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                            {% if context.setting.sls %} value="{{ context.setting.sls.value }}" {% endif %}
+                           placeholder="水流速(m/min)">
+                </div>
+                <div class="mb-4">
+                    <label for="dbcxwy"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">地表沉陷位移(mm):</label>
+                    <select name="dbcxwy_action" id="dbcxwy_action">
+                        {% if context.setting.dbcxwy %}
+                            <option value="lt" {% if context.setting.dbcxwy.action == "lt" %} selected {% endif %} >小于等于
+                            </option>
+                            <option value="gt" {% if context.setting.dbcxwy.action == "gt" %} selected {% endif %}>大于等于
+                            </option>
+                        {% else %}
+                            <option value="lt">小于等于</option>
+                            <option value="gt">大于等于</option>
+                        {% endif %}
+                    </select>
+                    <input id="dbcxwy" type="number" name="dbcxwy"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                            {% if context.setting.dbcxwy %} value="{{ context.setting.dbcxwy.value }}" {% endif %}
+                           placeholder="地表沉陷位移(mm)">
+                </div>
+                <div class="mb-4">
+                    <label for="wz" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">微震(mV/mA):</label>
+                    <select name="wz_action" id="wz_action">
+                        {% if context.setting.wz %}
+                            <option value="lt" {% if context.setting.wz.action == "lt" %} selected {% endif %} >小于等于
+                            </option>
+                            <option value="gt" {% if context.setting.wz.action == "gt" %} selected {% endif %}>大于等于
+                            </option>
+                        {% else %}
+                            <option value="lt">小于等于</option>
+                            <option value="gt">大于等于</option>
+                        {% endif %}
+                    </select>
+                    <input id="wz" type="number" name="wz"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                            {% if context.setting.wz %} value="{{ context.setting.wz.value }}" {% endif %}
+                           placeholder="微震(mV/mA)">
+                </div>
+                <!-- 省略其他表单字段 -->
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-600 ml-4">保存修改
+                </button>
+                <button type="button" id="closeSettingModal"
+                        class="mt-2 px-4 py-2 bg-red-500 text-white rounded-md cursor-pointer hover:bg-red-600">
+                    关闭
+                </button>
+            </form>
+            <!-- 关闭按钮 -->
+
+        </div>
+    </div>
+
+    <div id="excelModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-white p-4 rounded-md">
+            <!-- 表单内容 -->
+            <form id="excelForm" action="/excel_import" enctype="multipart/form-data" method="post">
+
+                <div class="mb-4">
+                    <label for="file" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">excel文件:</label>
+                    <input id="file" type="file" name="file" accept=".xls,.xlsx"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500">
+                </div>
+                <!-- 省略其他表单字段 -->
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-600 ml-4">保存修改
+                </button>
+                <button type="button" id="closeExcelModal"
+                        class="mt-2 px-4 py-2 bg-red-500 text-white rounded-md cursor-pointer hover:bg-red-600">
+                    关闭
+                </button>
+            </form>
+            <!-- 关闭按钮 -->
+
+        </div>
+    </div>
+
+    <div class="bg-gray-200 flex flex-col  gap-4 p-14">
+        <div class="flex flex-row justify-between">
+            <div class="flex flex-row gap-4">
+                <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md cursor-pointer font-bold"
+                        id="add-button" onclick="showModal('-1', '','','','','','','','','')">
+                    新增记录
+                </button>
+                <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md cursor-pointer font-bold"
+                        id="add-button" onclick="showSettingModal()">
+                    预警值设置
+                </button>
+                <button class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md cursor-pointer font-bold"
+                        id="add-button" onclick="showExcelModal()">
+                    Excel导入
+                </button>
+            </div>
+        </div>
+        <div class="">
+            <div class="flex flex-col justify-center bg-white p-4 mt-4">
+                <div>
+                    <table class="table w-full mt-4" id="table-to-export">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>监测点位</th>
+                            <th>时间</th>
+                            <th>降水量(mm)</th>
+                            <th>涌水量(m3/min)</th>
+                            <th>水位(m)</th>
+                            <th>水温(摄氏度)</th>
+                            <th>水流速(m/min)</th>
+                            <th>空气湿度(%)</th>
+                            <th>大气温度(℃)</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if context.query_list %}
+                            {% for row, flag in context.query_list %}
+                                <tr class=" {% if flag %} bg-red-300 hover:bg-red-500 {% else %} bg-gray-100 hover:bg-gray-200 {% endif %}"
+                                    style="text-align:center;">
+                                    <td>{{ row.id }}</td>
+                                    <td>{{ row.position }}</td>
+                                    <td>{{ row.date }}</td>
+                                    <td>{{ row.jsl }}</td>
+                                    <td>{{ row.ysl }}</td>
+                                    <td>{{ row.sw }}</td>
+                                    <td>{{ row.temp }}</td>
+                                    <td>{{ row.sls }}</td>
+                                    <td>{{ row.dbcxwy }}</td>
+                                    <td>{{ row.wz }}</td>
+                                    <td>
+                                        <a class="text-blue-500 hover:cursor-pointer"
+                                           onclick="showModal('{{ row.id }}','{{ row.position }}', '{{ row.date }}', '{{ row.jsl }}','{{ row.ysl }}', '{{ row.sw }}', '{{ row.temp }}', '{{ row.sls }}', '{{ row.dbcxwy }}', '{{ row.wz }}')">编辑</a>
+                                        <a class="text-red-500 hover:cursor-pointer  hover:text-red-300"
+                                           href="/del_record?record_id={{ row.id }}">删除记录</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="/static/js/flexDate.min.js"></script>
+    <script src="/static/js/xlsx.full.min.js"></script>
+
+    <script>
+
+        // 获取编辑链接和模态框
+        const editLinks = document.querySelectorAll('.edit-link');
+        const editModal = document.getElementById('editModal');
+        const settingModal = document.getElementById('settingModal');
+        const excelModal = document.getElementById('excelModal');
+        const editForm = document.getElementById('editForm');
+        const closeModalButton = document.getElementById('closeModal');
+        const closeSettingModal = document.getElementById('closeSettingModal');
+        const closeExcelModal = document.getElementById('closeExcelModal');
+
+        // 展示模态框
+        const showModal = (record_id, position, date, jsl, ysl, sw, temp, sls, dbcxwy, wz) => {
+            // 赋值表单
+            editForm.record_id.value = record_id;
+            editForm.position.value = position;
+            editForm.date.value = date;
+            editForm.jsl.value = jsl;
+            editForm.ysl.value = ysl;
+            editForm.sw.value = sw;
+            editForm.temp.value = temp;
+            editForm.sls.value = sls;
+            editForm.dbcxwy.value = dbcxwy;
+            editForm.wz.value = wz;
+
+            editModal.classList.remove('hidden');
+        };
+
+
+        // 关闭模态框事件
+        closeModalButton.addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+
+        const showSettingModal = () => {
+            settingModal.classList.remove('hidden');
+        };
+
+
+        // 关闭模态框事件
+        closeSettingModal.addEventListener('click', () => {
+            settingModal.classList.add('hidden');
+        });
+
+
+        const showExcelModal = () => {
+            excelModal.classList.remove('hidden');
+        };
+
+
+        // 关闭模态框事件
+        closeExcelModal.addEventListener('click', () => {
+            excelModal.classList.add('hidden');
+        });
+
+    </script>
+
+{% endblock %}

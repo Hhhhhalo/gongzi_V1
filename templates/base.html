@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/static/js/tailwindcss.js"></script>
+    <script src="/static/js/echarts.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" href="/static/css/web.css">
+    <link rel="stylesheet" href="/static/css/flexDate.min.css">
+    <title>工资管理系统</title>
+</head>
+<script>
+    {% if context.err %}
+        alert("{{ context.err}}");
+        {% block back %}
+        window.location.history(-1);
+        {% endblock %}
+    {% endif %}
+
+    {% if context.msg %}
+        alert("{{ context.msg}}");
+    {% endif %}
+</script>
+
+<body>
+
+<div class="bg-gray-900 p-4">
+    <!-- 公司logo -->
+    <div class="flex justify-between">
+        <div>
+            <h1 class="text-white text-4xl font-bold">工资管理系统</h1>
+        </div>
+        <div>
+            <a href="/help" class="text-white hover:text-gray-300 ml-4">帮助中心</a>
+        </div>
+    </div>
+</div>
+<div class="flex h-screen">
+    <!-- 左侧菜单栏 -->
+    <div class="bg-gray-800 text-white w-65 p-6 text-center">
+        <!-- 菜单内容 -->
+        <ul class="space-y-4">
+<!--            <li><a href="/home" class="hover:text-gray-300">监测仪表盘</a></li>-->
+            <li><a href="/gongzi/yuangong_gongzi" class="hover:text-gray-400 text-center">员工工资</a></li>
+            <li><a href="/gongzi/yuangong" class="hover:text-gray-400 text-center">员工信息</a></li>
+            <li><a href="/gongzi/bumen" class="hover:text-gray-300 text-center">部门</a></li>
+             <li><a href="/gongzi/yuangong_jixiao" class="hover:text-gray-300 text-center">绩效</a></li>
+            <li><a href="/gongzi/kaoqin" class="hover:text-gray-300 text-center">考勤</a></li>
+            <li><a href="/gongzi/shebao" class="hover:text-gray-300 text-center">社保</a></li>
+            <li><a href="/gongzi/yibao" class="hover:text-gray-300 text-center">医保</a></li>
+             <li><a href="/gongzi/neitui" class="hover:text-gray-300 text-center">内推</a></li>
+            <li><a href="/gongzi/duanxin_service" class="hover:text-gray-300 text-center">短信服务</a></li>
+            <li><a href="/gongzi/duanxin_fare" class="hover:text-gray-300 text-center">短信费用</a></li>
+            <li><a href="/gongzi/zhichang_kaizhi" class="hover:text-gray-300 text-center">职场开支</a></li>
+            <li><a href="/gongzi/zongjingban_kaizhi" class="hover:text-gray-300 text-center">总经办开支</a></li>
+            <li><a href="/gongzi/jixiaofangan" class="hover:text-gray-300 text-center">绩效方案</a></li>
+              <li><a href="/gongzi/xiangmu_fangan" class="hover:text-gray-300 text-center">项目方案</a></li>
+            <li><a href="/userInfo" class="hover:text-gray-300 text-center">用户信息</a></li>
+            {% if context.user.role == "admin" %}
+{#            <li><a href="/big_screen" target="_blank" class="hover:text-gray-300">数据大屏</a></li>#}
+            {% endif %}
+            <li><a href="/logout" class="hover:text-gray-300 text-center">退出登录</a></li>
+        </ul>
+    </div>
+
+        <!-- 主体内容 -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- 主体内容区域 -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto p-4">
+                {% block container %}
+                <!-- 页面内容 -->
+                <h1 class="text-2xl font-semibold mb-4">Dashboard</h1>
+                <div class="flex space-x-4">
+                    <!-- 示例卡片 1 -->
+                    <div class="bg-white p-4 rounded-md shadow-md flex-1">
+                        <h2 class="text-lg font-semibold mb-2">Total Users</h2>
+                        <p class="text-gray-600">500</p>
+                    </div>
+                    <!-- 示例卡片 2 -->
+                    <div class="bg-white p-4 rounded-md shadow-md flex-1">
+                        <h2 class="text-lg font-semibold mb-2">Total Products</h2>
+                        <p class="text-gray-600">1200</p>
+                    </div>
+                </div>
+                {% endblock %}
+            </main>
+        </div>
+
+</div>
+
+
+</body>
+{% block script %}
+{% endblock %}
+
+</html>

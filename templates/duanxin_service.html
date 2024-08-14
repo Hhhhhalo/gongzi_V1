@@ -1,0 +1,348 @@
+{% extends 'base.html' %}
+
+{% block back %}
+
+{% endblock %}
+
+{% block container %}
+    <h1 class="text-2xl font-semibold mb-4">短信服务</h1>
+    <!-- 添加模态框 -->
+    <div id="editModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-white p-4 rounded-md">
+            <!-- 表单内容 -->
+            <form id="editForm" action="/gongzi/add_duanxin_service" enctype="multipart/form-data" method="post">
+                <input type="hidden" name="id">
+                <div class="mb-4">
+                    <label for="工号"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">工号:</label>
+                    <input id="gonghao" type="text" name="gonghao" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="工号">
+                </div>
+                <div class="mb-4">
+                    <label for="姓名"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">姓名:</label>
+                    <input id="name" type="text" name="name" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="姓名">
+                </div>
+
+                <div class="mb-4">
+                    <label for="项目"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">项目:</label>
+                    <input id="xiangmu" type="text" name="xiangmu" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="项目">
+                </div>
+                 <div class="mb-4">
+                    <label for="申请费用"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">申请费用:</label>
+                    <input id="shenqing_fare" type="text" name="shenqing_fare" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="申请费用">
+                </div>
+                <div class="mb-4">
+                    <label for="人数"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">人数:</label>
+                    <input id="renshu" type="text" name="renshu" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="人数">
+                </div>
+                  <div class="mb-4">
+                    <label for="组管是否确认"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">组管是否确认:</label>
+                    <input id="or_pass" type="text" name="or_pass" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="组管是否确认">
+                </div>
+                  <div class="mb-4">
+                    <label for="实发"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">实发:</label>
+                    <input id="shifa" type="text" name="shifa" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="实发">
+                </div>
+
+                <div class="mb-4">
+                    <label for="发放方式"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">发放方式:</label>
+                    <input id="fangshi" type="text" name="fangshi" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="发放方式">
+                </div>
+                  <div class="mb-4">
+                    <label for="实发时间"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">实发时间:</label>
+                    <input id="shifa_time" type="text" name="shifa_time" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="实发时间">
+                </div>
+                <div class="mb-4">
+                    <label for="回收时间"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">回收时间:</label>
+                    <input id="huishou_fare" type="text" name="huishou_fare" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="回收时间">
+                </div>
+                  <div class="mb-4">
+                    <label for="回收费用"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">回收费用:</label>
+                    <input id="huishou_time" type="text" name="huishou_time" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="回收费用">
+                </div>
+                  <div class="mb-4">
+                    <label for="大项"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">大项:</label>
+                    <input id="daxiang" type="text" name="daxiang" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="大项">
+                </div>
+                <div class="mb-4">
+                    <label for="结算日期"
+                           class="ml-3 text-sm font-bold text-gray-700 tracking-wide">结算日期:</label>
+                    <input id="gongzi_time" type="text" name="gongzi_time" required
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                           placeholder="结算日期">
+                </div>
+
+                <!-- 省略其他表单字段 -->
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-600 ml-4">保存
+                </button>
+                <button type="button" id="closeModal"
+                        class="mt-2 px-4 py-2 bg-red-500 text-white rounded-md cursor-pointer hover:bg-red-600">
+                    关闭
+                </button>
+            </form>
+            <!-- 关闭按钮 -->
+
+        </div>
+    </div>
+
+    <div id="settingModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-white p-4 rounded-md">
+            <!-- 表单内容 -->
+            <form id="editForm" action="/gongzi/set_duanxin_service" enctype="multipart/form-data" method="post">
+                <!-- 省略其他表单字段 -->
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-600 ml-4">保存修改
+                </button>
+                <button type="button" id="closeSettingModal"
+                        class="mt-2 px-4 py-2 bg-red-500 text-white rounded-md cursor-pointer hover:bg-red-600">
+                    关闭
+                </button>
+            </form>
+            <!-- 关闭按钮 -->
+
+        </div>
+    </div>
+<!--    <div id="editModal" class="hidden">-->
+<!--        &lt;!&ndash; 模态框内容 &ndash;&gt;-->
+<!--        <form id="editForm" action="/set_xiangmu" method="POST">-->
+<!--            <input type="hidden" name="id" value="">-->
+<!--            <input type="text" name="xiangmu_name" value="">-->
+<!--            <button type="submit">保存修改</button>-->
+<!--            <button id="closeModal">关闭</button>-->
+<!--        </form>-->
+<!--    </div>-->
+    <div id="excelModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-white p-4 rounded-md">
+            <!-- 表单内容 -->
+            <form id="excelForm" action="/gongzi/duanxin_service_import" enctype="multipart/form-data" method="post">
+
+                <div class="mb-4">
+                    <label for="file" class="ml-3 text-sm font-bold text-gray-700 tracking-wide">excel文件:</label>
+                    <input id="file" type="file" name="file" accept=".xls,.xlsx"
+                           class="mb-2 text-base border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500">
+                </div>
+                <!-- 省略其他表单字段 -->
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-600 ml-4">保存修改
+                </button>
+                <button type="button" id="closeExcelModal"
+                        class="mt-2 px-4 py-2 bg-red-500 text-white rounded-md cursor-pointer hover:bg-red-600">
+                    关闭
+                </button>
+            </form>
+            <!-- 关闭按钮 -->
+
+        </div>
+    </div>
+
+    <div class="bg-gray-200 flex flex-col  gap-4 p-14">
+        <div class="flex flex-row justify-between">
+            <div class="flex flex-row gap-4">
+                <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md cursor-pointer font-bold"
+                        id="add-button" onclick="showModal('', '','','','','','','','','','','','','')">
+                    新增记录
+                </button>
+                <button class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md cursor-pointer font-bold"
+                        id="add-button" onclick="showExcelModal()">
+                    Excel导入
+                </button>
+            </div>
+        </div>
+        <div id="settingModal" class="">
+            <div class="flex flex-col justify-center bg-white p-4 mt-4">
+                <div>
+                    <table class="table w-full mt-4" id="table-to-export">
+                        <thead>
+                        <tr>
+<!--                            <th>ID</th>-->
+                            <th>工号</th>
+                            <th>姓名</th>
+                            <th>项目</th>
+                            <th>申请费用</th>
+                            <th>人数</th>
+                            <th>组管是否确认</th>
+                            <th>实发</th>
+                            <th>发放方式</th>
+                            <th>实发时间</th>
+                            <th>回收时间</th>
+                            <th>回收费用</th>
+                            <th>大项</th>
+                             <th>结算日期</th>
+                            <th>创建时间</th>
+                             <th>操作</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if context.query_list %}
+                            {% for row, flag in context.query_list %}
+                                <tr class=" {% if flag %} bg-red-300 hover:bg-red-500 {% else %} bg-gray-100 hover:bg-gray-200 {% endif %}"
+                                    style="text-align:center;">
+<!--                                     <td>{{ row.id }}</td>-->
+                                    <td>{{ row.gonghao }}</td>
+                                    <td>{{ row.name }}</td>
+                                    <td>{{ row.xiangmu }}</td>
+                                    <td>{{ row.shenqing_fare }}</td>
+                                    <td>{{ row.renshu }}</td>
+                                    <td>{{ row.or_pass }}</td>
+                                    <td>{{ row.shifa }}</td>
+                                    <td>{{ row.fangshi }}</td>
+                                     <td>{{ row.shifa_time }}</td>
+                                    <td>{{ row.huishou_time }}</td>
+                                      <td>{{ row.huishou_fare }}</td>
+                                      <td>{{ row.daxiang }}</td>
+                                     <td>{{ row.gongzi_time }}</td>
+                                    <td>{{ row.create_time }}</td>
+
+                                    <td>
+                                        <a class="text-blue-500 hover:cursor-pointer" onclick="showModal('{{row.id }}','{{ row.gonghao }}', '{{ row.name }}', '{{ row.xiangmu }}', '{{ row.shenqing_fare }}', '{{ row.renshu }}', '{{ row.or_pass }}', '{{ row.shifa }}', '{{ row.fangshi }}', '{{ row.shifa_time }}', '{{ row.huishou_fare }}', '{{ row.huishou_time }}', '{{ row.daxiang }}', '{{ row.gongzi_time }}')">修改</a>
+
+                                        <a class="text-red-500 hover:cursor-pointer  hover:text-red-300"
+                                           href="/gongzi/del_duanxin_service?id={{ row.id }}">删除</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="/static/js/flexDate.min.js"></script>
+    <script src="/static/js/xlsx.full.min.js"></script>
+
+    <script>
+
+        // 获取编辑链接和模态框
+        const editLinks = document.querySelectorAll('.edit-link');
+        const editModal = document.getElementById('editModal');
+        const settingModal = document.getElementById('settingModal');
+        const excelModal = document.getElementById('excelModal');
+        const editForm = document.getElementById('editForm');
+        const closeModalButton = document.getElementById('closeModal');
+        const closeSettingModal = document.getElementById('closeSettingModal');
+        const closeExcelModal = document.getElementById('closeExcelModal');
+
+        // 展示模态框
+        const showModal = (id,gonghao,name, xiangmu,shenqing_fare,renshu,or_pass,shifa,fangshi,shifa_time,huishou_fare,huishou_time,daxiang,gongzi_time) => {
+            // 赋值表单
+            editForm.id.value = id;
+            editForm.gonghao.value = gonghao;
+            editForm.name.value = name;
+            editForm.xiangmu.value = xiangmu;
+            editForm.shenqing_fare.value = shenqing_fare;
+            editForm.renshu.value = renshu;
+            editForm.or_pass.value = or_pass;
+            editForm.shifa.value = shifa;
+            editForm.fangshi.value = fangshi;
+            editForm.shifa_time.value = shifa_time;
+            editForm.huishou_fare.value = huishou_fare;
+            editForm.huishou_time.value = huishou_time;
+            editForm.daxiang.value = daxiang;
+            editForm.gongzi_time.value = gongzi_time;
+
+            editModal.classList.remove('hidden');
+        };
+
+
+        // 关闭模态框事件
+        closeModalButton.addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+
+        const showSettingModal = () => {
+            settingModal.classList.remove('hidden');
+        };
+
+
+        // 关闭模态框事件
+        closeSettingModal.addEventListener('click', () => {
+            settingModal.classList.add('hidden');
+        });
+
+
+        const showExcelModal = () => {
+            excelModal.classList.remove('hidden');
+        };
+
+
+        // 关闭模态框事件
+        closeExcelModal.addEventListener('click', () => {
+            excelModal.classList.add('hidden');
+        });
+
+    </script>
+<script>
+// JavaScript 用于处理模态框的显示和隐藏
+document.getElementById('openModal').addEventListener('click', function() {
+    document.getElementById('editModal').classList.remove('hidden');
+});
+
+document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('editModal').classList.add('hidden');
+});
+
+// 处理表单提交
+document.getElementById('editForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    // 使用 AJAX 或 Fetch API 发送数据到后端
+    fetch('/add_duanxin_service', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        // 关闭模态框
+        document.getElementById('editModal').classList.add('hidden');
+        // 可选：清空表单或显示成功消息
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+</script>
+{% endblock %}
