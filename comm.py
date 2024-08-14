@@ -11,4 +11,7 @@ def format_datetime(date):
     return date.strftime("%Y-%m-%d %H:%M:%S")
 
 def str2datetime(date, format="%Y-%m-%d %H:%M:%S"):
+    pass
+
+
     return datetime.strptime(date, format)
