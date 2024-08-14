@@ -14,4 +14,6 @@ def str2datetime(date, format="%Y-%m-%d %H:%M:%S"):
     pass
 
 
+
+
     return datetime.strptime(date, format)
